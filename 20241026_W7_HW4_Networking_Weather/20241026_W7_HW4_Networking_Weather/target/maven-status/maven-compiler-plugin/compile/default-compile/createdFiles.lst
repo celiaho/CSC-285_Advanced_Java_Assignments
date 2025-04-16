@@ -1,0 +1,5 @@
+edu\bhcc\WeatherReader.class
+edu\bhcc\WeatherClient.class
+edu\bhcc\WeatherServer.class
+edu\bhcc\HandleWeatherRequest.class
+edu\bhcc\Weather.class

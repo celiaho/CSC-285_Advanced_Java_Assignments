@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="20241026_W7_HW4_Networking_Weather" />
+        <module name="20241109_W9_HW5_Networking_and_Databases_Weather" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>
