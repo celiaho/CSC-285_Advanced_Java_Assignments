@@ -1,0 +1,111 @@
+#RegExNotes
+
+    // https://www.tutorialspoint.com/javaregex/javaregex_capturing_groups.htm
+
+    String line = String line = "This order was placed for QT3000! OK?";
+    String pattern = "(.*)(\\d+)(.*)";
+
+    Pattern pattern = Pattern.compile(pattern);
+    Matcher matcher = pattern.matcher(line);
+
+    // matcher.groupCount() = int, # of capturing groups in the matcher's pattern (excl. group 0)
+    // matcher.group[0] = the entire expression
+
+
+    String pattern = "(.*)(\\d+)(.*)";
+    (.*)
+        . = matches any single char except newline
+        * = matches the preceding element 0+ times
+        == matches any sequence of chars, incl. an empty string
+
+    (\d+)
+        first \ is an escape sequence
+        \d = matches a single digit char 0-9
+        + = matches the preceding element 1+ times
+        == matches a sequence of 1 or more digits
+
+    (.*)(\\d+)(.*) = (everything before first digit sequence) (digit sequence)(everything after first digit sequence)
+
+        ? = matches 0 or 1 occurrence of preceding element
+
+--------------------------------------
+#Client-Side Validation
+
+    // JavaScript for client-side validation
+            writer.println("<script>");
+            writer.println("document.getElementById('recipe_form').onsubmit = function() {");
+            writer.println("const originalIngredients = document.getElementById('originalIngredients').value.trim();");
+            writer.println("const originalServingsString = parseFloat(document.getElementById('originalServingsString').value);");
+            writer.println("const desiredServingsString = parseFloat(document.getElementById('desiredServingsString').value);");
+
+            // Validate that the ingredient list is not empty
+            writer.println("if (originalIngredients === '') {");
+            writer.println("alert('Please enter your ingredient list.');");
+            writer.println("return false; // Prevent form submission");
+            writer.println("}");
+
+            // Validate original servings
+            writer.println("if (originalServingsString <= 0) {");
+            writer.println("alert('Original servings must be greater than zero. Please enter a valid number.');");
+            writer.println("return false; // Prevent form submission");
+            writer.println("}");
+
+            // Validate desired servings
+            writer.println("if (desiredServingsString <= 0) {");
+            writer.println("alert('Desired servings must be greater than zero. Please enter a valid number.');");
+            writer.println("return false; // Prevent form submission");
+            writer.println("}");
+
+            writer.println("return true; // Allow form submission");
+            writer.println("};");
+            writer.println("</script>");
+
+    writer.println("<input type='number' id='originalServingsString' name='originalServingsString' min='0.01' required/>");
+    min specified
+    Made up/down arrows in num field that inc/dec by 1.00 down to 0.01
+    -8 input on submit causes a pop up at field saying "Please select a value that is no less than 0.01." Click outside of it to go back to form
+    requires all numbers to end in .01
+
+    if nonumeric or fraction or number+space input pop up at field says "Please enter a number."
+
+    writer.println("<input type='number' id='desiredServingsString' " +
+                    "name='desiredServingsString' " +
+                    "required/>");
+    No Min
+    up/down arrows inc/dec into negatives
+    -7 input = once while hovering over input & on submit pop up at field says"Please enter a number." then i couldn't replicate this.
+    now -7 input on submit localhost pop up alert shows "Desired servings must be greater than zero. Please enter a valid number." (from javascript validation) with mandatory OK button to go back to form
+
+    in both cases if nonnumeric or fraction input it says "Please enter a number." believe this is due to the number input type
+
+Number Input fields don't allow fractions, does allow decimals
+
+  ----> Going to switch back to text input & use span elements to display error messages within the form
+    <span id="originalServingsError" style="color: red;"></span>
+        You can get past error pop ups by entering a space in each field but upon Submit span error messages show up one at a time, starting with the first
+  ---> Added validation for negative numbers
+   if (isNaN(originalServings) || originalServings <= 0) {
+     document.getElementById('originalServingsError').textContent = 'Please enter a valid positive number for original servings.';
+     return false;
+   }
+
+    - but can i still prevent submittal - yes
+    - but if it's text how will the javascript validate the number value - isNaN() converts numbers to doubles but make sure number != NaN
+    - is the required attribute interfering with span showing (sometimes but acceptable)
+
+--------------------------
+# Client-Side Validation
+I think I need to fix server side validation before I finish ==NaN testing on client side
+[]---> Complete NaN testing at a later date, for now most users will not think to do this
+
+---> Server-side validation completed. But this seems to have overridden the client-side validation checks--now only the server-side error message shows below the app header, which is not as helpful as visually indicating the specific field causing an error. Also not helpful: All fields are cleared upon submit, even the ones without errors. This is annoying if you've entered a long and valid ingredient list. Don't remember if this was a problem with just client-side validation.
+ -- For some reason a whitespace in ingredients doesn't show an error until the yield fields are resolved.
+
+ --> Try commenting out the server-side error code on the form page - did this but Submit must be hit twice before client-side validators kick in, which is confusing.
+ -- Adding the code back in for now.
+
+ []---> Ask professor if client-side validation will suffice, or if it's best practice to include client-side validation error messages as well.
+
+-----------------------
+# Easy-to-read output quantities
+Instead of long decimal numbers, output is now converted back into whole or fractional notation!
