@@ -1,3 +1,7 @@
+> **Further development:** This project was expanded into a hosted, multi-user web app. See the full version at [recipemultiplier.celiaho.com](https://recipemultiplier.celiaho.com) · [GitHub: celiaho/recipe-multiplier](https://github.com/celiaho/recipe-multiplier)
+
+---
+
 To run the server:
 
 mvn jetty:run
